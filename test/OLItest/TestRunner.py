@@ -160,9 +160,9 @@ class OLITestLib():
                         ([^"]|\\")*             # a non-quote or a backslashded quote
                         (?P=quote))$            # ending quote
                         ''', d, flags=re.VERBOSE)
-                    folder = bytearray(m.group('dir'))
+                    folder = m.group('dir')
                     if not m.group('quote'):
-                        folder = '"%s"' % folder
+                        folder = b'"%s"' % folder
                 #folder = folder.replace(br'\"', b'"') # remove quoting
                 dirs.append(folder)
             # 2) filter out those not starting with INBOX.OLItest and del...
