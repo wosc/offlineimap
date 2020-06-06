@@ -1,4 +1,3 @@
-credentials.conf
 tmp_*
 *.pyc
 OLItest/*.pyc

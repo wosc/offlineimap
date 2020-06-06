@@ -138,9 +138,10 @@ class OLITestLib():
             # settings and no fancy password getting here...
             # 1) connect and get dir listing
             host = config.get(sec, 'remotehost')
+            port = int(config.get(sec, 'remoteport'))
             user = config.get(sec, 'remoteuser')
             passwd = config.get(sec, 'remotepass')
-            imapobj = imaplib.IMAP4(host)
+            imapobj = imaplib.IMAP4_SSL(host, port)
             imapobj.login(user, passwd)
             res_t, data = imapobj.list()
             assert res_t == 'OK'
