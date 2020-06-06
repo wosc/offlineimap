@@ -21,11 +21,8 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA
 
-import os
-from distutils.core import setup, Command
-import offlineimap
-import logging
-from test.OLItest import TextTestRunner, TestLoader, OLITestLib
+from setuptools import setup, Command
+
 
 class TestCommand(Command):
     """runs the OLI testsuite"""
@@ -42,27 +39,37 @@ class TestCommand(Command):
         pass
 
     def run(self):
+        from test.OLItest import TextTestRunner, TestLoader, OLITestLib
+        import logging
+        import os.path
+        import sys
         logging.basicConfig(format='%(message)s')
+        here = os.path.dirname(os.path.abspath(__file__))
         # set credentials and OfflineImap command to be executed:
-        OLITestLib(cred_file='./test/credentials.conf', cmd='./offlineimap.py')
+        OLITestLib(cred_file=here + '/test/credentials.conf',
+                   cmd=[sys.executable, '%s/offlineimap.py' % here])
         suite = TestLoader().discover('./test/tests')
-        #TODO: failfast does not seem to exist in python2.6?
-        TextTestRunner(verbosity=2,failfast=True).run(suite)
+        # TODO: failfast does not seem to exist in python2.6?
+        TextTestRunner(verbosity=2).run(suite)
 
 
-setup(name = "offlineimap",
-      version = offlineimap.__version__,
-      description = offlineimap.__description__,
-      long_description = offlineimap.__description__,
-      author = offlineimap.__author__,
-      author_email = offlineimap.__author_email__,
-      url = offlineimap.__homepage__,
-      packages = ['offlineimap', 'offlineimap.folder',
+setup(name="offlineimap",
+      version='7.3.3+py3',
+      description='',
+      long_description='',
+      author='',
+      author_email='',
+      url='',
+      packages=['offlineimap', 'offlineimap.folder',
                   'offlineimap.repository', 'offlineimap.ui',
                   'offlineimap.utils'],
-      scripts = ['bin/offlineimap'],
-      license = offlineimap.__copyright__ + \
-                ", Licensed under the GPL version 2",
-      cmdclass = { 'test': TestCommand}
+      # scripts=['bin/offlineimap'],
+      install_requires=[
+          'setuptools',
+          'six',
+          'rfc6555'
+      ],
+      license='',
+      cmdclass={'test': TestCommand},
 )
 

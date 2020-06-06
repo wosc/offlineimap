@@ -113,8 +113,8 @@ class OLITestLib():
         """
         try:
             output = subprocess.check_output(
-                [cls.cmd,
-                 "-c%s" % os.path.join(cls.testdir, 'offlineimap.conf')],
+                cls.cmd +
+                ["-c%s" % os.path.join(cls.testdir, 'offlineimap.conf')],
                 shell=False)
         except subprocess.CalledProcessError as e:
             return (e.returncode, e.output.decode('utf-8'))
